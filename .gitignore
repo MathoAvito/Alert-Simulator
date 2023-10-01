@@ -1,0 +1,49 @@
+# Python files
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+*.venv/
+*.log
+
+# Docker files
+*.log
+
+# Kubernetes files (if using secrets or config maps in the same repo, careful not to commit sensitive data)
+# secret.yaml
+# config-map.yaml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.iml
+
+# Build artifacts and dependencies
+build/
+dist/
+*.tar.gz
+
+# Environment variables or secrets
+.env
+.secrets
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Other
+*.pid
+*.seed
+*.lock
