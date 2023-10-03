@@ -1,0 +1,31 @@
+name: Lint Changed Files
+
+on: [push, pull_request]
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get list of changed files
+      id: getfile
+      run: |
+        echo "::set-output name=files::$(git diff --name-only HEAD^ HEAD)"
+
+    - name: Lint Python scripts
+      run: |
+        pip install flake8
+        echo ${{ steps.getfile.outputs.files }} | xargs -n 1 echo | grep \\.py$ | xargs flake8
+
+    - name: Lint shell scripts
+      run: |
+        sudo apt-get install shellcheck
+        echo ${{ steps.getfile.outputs.files }} | xargs -n 1 echo | grep \\.sh$ | xargs shellcheck
+
+    - name: Lint YAML files
+      run: |
+        pip install yamllint
+        echo ${{ steps.getfile.outputs.files }} | xargs -n 1 echo | grep \\.yaml$ | xargs yamllint
