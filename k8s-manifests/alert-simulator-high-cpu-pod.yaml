@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: event-simulator
+  name: alert-simulator
 spec:
   containers:
-  - name: event-simulator
-    image: event-simulator:latest
+  - name: alert-simulator
+    image: alert-simulator:latest
     args:
     - "oom"
     resources:
