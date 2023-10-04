@@ -29,7 +29,7 @@ jobs:
           pip install flake8
           IFS=', ' read -r -a files <<< "${{ needs.changed_files.outputs.all_changed_files }}"
           for file in "${files[@]}"; do
-            [[ "$file" == *.py ]] && flake8 "$file"
+            [[ "$file" == *.py ]] && (echo "Linting $file" ; flake8 "$file" || exit 1)
           done
 
       - name: Lint shell scripts
