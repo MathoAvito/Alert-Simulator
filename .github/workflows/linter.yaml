@@ -24,26 +24,21 @@ jobs:
     needs: [changed_files]
     runs-on: ubuntu-latest
     steps:
-      - name: Lint Python scripts
-        run: |
-          pip install flake8
-          IFS=', ' read -r -a files <<< "${{ needs.changed_files.outputs.all_changed_files }}"
-          for file in "${files[@]}"; do
-            [[ "$file" == *.py ]] && (echo "Linting $file" ; flake8 "$file" || exit 1)
-          done
+    - name: Lint Python scripts
+      if: endsWith(needs.changed_files.outputs.all_changed_files, '.py')
+      run: |
+        pip install flake8
+        echo "${{ needs.changed_files.outputs.all_changed_files }}" | tr ' ' '\n' | grep \\.py$ | xargs flake8
 
-      - name: Lint shell scripts
-        run: |
-          sudo apt-get install shellcheck
-          IFS=', ' read -r -a files <<< "${{ needs.changed_files.outputs.all_changed_files }}"
-          for file in "${files[@]}"; do
-            [[ "$file" == *.sh ]] && shellcheck "$file"
-          done
+    - name: Lint shell scripts
+      if: endsWith(needs.changed_files.outputs.all_changed_files, '.sh')
+      run: |
+        sudo apt-get install shellcheck
+        echo "${{ needs.changed_files.outputs.all_changed_files }}" | tr ' ' '\n' | grep \\.sh$ | xargs shellcheck
 
-      - name: Lint YAML files
-        run: |
-          pip install yamllint
-          IFS=', ' read -r -a files <<< "${{ needs.changed_files.outputs.all_changed_files }}"
-          for file in "${files[@]}"; do
-            [[ "$file" == *.yaml || "$file" == *.yml ]] && yamllint "$file"
-          done
+    - name: Lint YAML files
+      if: endsWith(needs.changed_files.outputs.all_changed_files, 'yaml')
+      run: |
+        pip install yamllint
+        echo "${{ needs.changed_files.outputs.all_changed_files }}" | tr ' ' '\n' | grep \\.y[a]?ml$ | xargs yamllint
+
