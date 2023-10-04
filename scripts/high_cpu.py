@@ -1,2 +1,3 @@
 while True:
-    pass
+    pass 
+V = 123
